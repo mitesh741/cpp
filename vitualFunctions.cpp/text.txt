@@ -1,0 +1,1 @@
+Virtual: By putting virtual keyword in front of function of Parent class, it allows to override in child classes.

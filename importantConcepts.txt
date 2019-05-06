@@ -1,0 +1,30 @@
+Adding Shared libraries to System library path
+
+Here we discuss what a Shared library is and how adding Shared libraries to System library path can be done.
+A shared library is a library that is loaded into memory at load time or run time by an executable or other shared objects. Once loaded, the shared library code can be shared between by any number of programs or objects. In this way the size of programs and the memory footprint can be kept low. Shared libraries also provide modularity to the development environment as the library code can be changed, modified and recompiled without having to re-compile an entire application.
+
+When we run an executable, by default the loader or dynamic linker is run first. The dynamic linker itself is a shared object file /lib/ld-linux.so.X where X is a version number. The dynamic linker in turn finds and loads all the shared libraries on which the executable depends.
+All the directories that are searched by the dynamic linker in order to find the libraries are stored in the file /etc/ld.so.conf. Searching all these directories, everytime the executable is run can be time consuming. So the dynamic linker maintains links to the shared libraries and an index of these links in a cache file named /etc/ld.so.cache. As a result reading information from cache takes very little time.
+The catch here is that every time a library is added or removed in the system, the shared library cache needs to be rebuilt.
+
+ 
+
+There are three standard locations in the filesystem where a shared library can be placed.
+
+    /lib/
+    /usr/lib/
+    /usr/local/lib/
+
+According to the FHS or Filesystem Hierarchy Standard; All the libraries which are needed to boot the system and run the commands in the root filesystem(that is, by the binaries in /bin/ and /sbin/) are kept in /lib/ directory; All the libraries that are not intended to be executed directly by users or shell scripts are kept in the /usr/lib/ directory.
+The third location, /usr/local/lib/ is not defined in FHS. This directory as a convention, contains all the libraries that are not part of standard distribution. These non-standard libraries will be the one’s which we manually installed and could be possibly buggy or problematic.
+
+When we install an application from source code, it usually gets installed in the location /usr/local/. Unless we change it using the --prefix option or the application is configure to be installed on another location, this is what usually happens. In such a case, we have to tell the dynamic linker to search the location /usr/local/lib/. In order to do so, perform the following steps.
+
+ 
+
+Create a file local.conf in the directory /etc/ld.so.conf.d/ with the entry /usr/local/lib/.
+
+# echo "/usr/local/lib" > /etc/ld.so.conf.d/local.conf
+
+Now, whenever a library is added or removed in the system, all we have to do is run the command ldconfig. ldconfig will scan the directories specified on the command line, in the file /etc/ld.so.conf, in the trusted directories (/lib/ and /usr/lib/) and update the links and cache to the most recently shared libraries.
+

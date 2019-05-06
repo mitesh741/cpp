@@ -1,0 +1,10 @@
+HEADER = -I/opt/morpho/include/printer -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include
+
+LIBB = -L/opt/morpho/lib/printer
+
+LIBRA = -lprinter
+
+main : main.c
+	g++ -g -o main $(HEADER) $(LIBB) $(LIBRA) main.c
+clean:
+	rm -rf main 	

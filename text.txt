@@ -1,0 +1,11 @@
+1) Function once declared as virtual in base class is always virtual in all its derived classes.
+
+2) If function in base class is not declared as virtual then compiler decides which function has to be invoked by types of pointer and not by the type of address of the object stored in pointer. If fucntion declared as virtual then it decides by type of objects stored in pointer.
+
+3) Compiler always takes default value of virtual base class function. So we should always avoid taking default values in virtual function in derived classes.
+
+4) If we do not override pure virtual function in derived classes then derived class becomes abstract class.
+
+5) Static functions can not be const or virtual
+
+6) Pure virtual destructor are legal in standard C++ and one of the most important thing is that if class contains pure virtual destructor it is must to provide a function body for the pure virtual destructor. This seems strange that how a virtual function is pure if it requires a function body? But destructors are always called in the reverse order of the class derivation. That means derived class destructor will be invoked first & then base class destructor will be called. If definition for the pure virtual destructor is not provided then what function body will be called during object destruction? Therefore compiler & linker enforce existence of function body for pure virtual destructor.

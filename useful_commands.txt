@@ -1,0 +1,21 @@
+df -h : list space
+
+dnf list lib: list current version of library
+
+To Clean yum cache : yum clean all
+yum -y update glibc
+
+rpm -qi .rpm   (List information about rpm file)
+rpm -ql package-name   (List all files containing particular package)
+
+
+Linux command to list symbols present in shared library
+
+nm -D .so
+
+
+
+# Command to switch off and on Ethernet and NIC 
+/etc/sysconfig/network-scripts/ifup interface-name (eth0 or eth1)
+/etc/sysconfig/network-scripts/ifdown interface-name (eth0 or eth1)
+

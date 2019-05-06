@@ -1,0 +1,38 @@
+export OUTDIR=$(shell pwd)/build
+export OBJ_APP = obj-app
+
+APP_NAME = snapi_sample_app
+
+SRC = $(wildcard src/*.cpp)
+
+OBJ_FILES = $(OUTDIR)/$(OBJ_APP)/
+
+OBJ = $(addprefix  $(OBJ_FILES),$(notdir $(SRC:.cpp=.o)))
+
+INC = -I$(PWD)/inc -I$(PWD)/src -I/opt/morpho/include/snapi 
+
+LIBS =	-lsnapi -lpthread
+
+LIBDIRS = -L/opt/morpho/lib/snapi #-L/usr/lib64
+
+LDFLAGS = $(LIBDIRS) $(LIBS)
+
+CXXSOURCES = sample_app.cpp
+
+CXXOBJECTS = $(CXXSOURCES:.cpp=.o)
+
+CXX = g++
+
+all: $(APP_NAME) install
+
+$(APP_NAME): $(OBJ)
+	$(CXX) -o $@  $(CXXOBJECTS) $(LDFLAGS)
+
+$(OBJ_FILES)%.o:  src/%*.cpp 
+	$(CXX) -c $(INC) src/sample_app.cpp  
+install:
+	mkdir -p $(OBJ_FILES)
+	mv $(APP_NAME) build
+	mv *.o $(OBJ_FILES)
+clean:
+	rm -rf build
